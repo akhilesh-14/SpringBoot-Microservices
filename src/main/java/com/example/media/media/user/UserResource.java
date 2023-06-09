@@ -1,5 +1,6 @@
 package com.example.media.media.user;
 
+import com.example.media.media.Exception.UserException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,8 +20,12 @@ public class UserResource {
     }
 
     @GetMapping("/users/{id}")
-    public User retriveAllUsers(@PathVariable int id){
-        return service.findOne(id);
+    public User retriveUser(@PathVariable int id){
+        User user = service.findOne(id);
+        if(user == null){
+            throw new UserException("id:"+id);
+        }
+        return user;
     }
     @PostMapping("/users")
     public ResponseEntity<Object> createUser(@RequestBody User user){
